@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="lalala">
       <router-link class="writeMsg" to="/SendForm">我要发表朋友圈</router-link>
       
       <div id="list">
@@ -121,8 +121,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <!-- style加上scoped表示此css样式只在本模块中有效 -->
-<style>  
+<style scoped>  
 .writeMsg{
+   font-size: 12px;
     position: absolute;
     right: 20%;
     top:30px;
@@ -140,7 +141,10 @@ export default {
     background-color: #FF0000;
     color: white;
 }
-body { font-size: 12px; line-height: 120%; text-align: center; color:#333; padding: 20px;}
+#list{
+  font-size: 12px;
+}
+body {  line-height: 120%; text-align: center; color:#333; padding: 20px;}
         a { color: #333; text-decoration: none;}
         a:hover { text-decoration: underline;}
         * { margin: 0; padding: 0; border: none;}
