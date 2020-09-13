@@ -3,7 +3,7 @@
     <router-link class="writeMsg" to="/SendForm">我要发表朋友圈</router-link>
 
     <div id="list">
-      <div class="box clearfix">
+      <!-- <div class="box clearfix">
         <a class="close" href="javascript:;">×</a>
         <img
           class="head"
@@ -111,13 +111,14 @@
             </span>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="box clearfix">
+
+      <div v-for="item in test" v-bind:key="item.id" class="box clearfix">
         <a class="close" href="javascript:;">×</a>
         <img
           class="head"
-          src="https://www.17sucai.com/preview/639532/2016-10-25/54aa535f0001a6df00000000/images/3.jpg"
+          v-bind:src="item.toppicurl"
           alt
         />
         <div class="content">
@@ -152,14 +153,26 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      loading: true
+      loading: true,
+      test:[]
     };
   },
   methods: {
    
   },
   created() {
-    
+     // axios请求开始
+        this.axios
+          .post("/api/lifespace/getAllContent")
+          .then(response => {
+            console.log(response.data);
+            this.test=response.data;
+          })
+          .catch(function(error) {
+            this.$message.error('服务器发生故障');
+
+          });
+        // axios请求结束
   }
 };
 </script>
