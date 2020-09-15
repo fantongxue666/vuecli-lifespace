@@ -124,7 +124,7 @@
         <div class="content">
           <div class="main">
             <p class="txt">
-              <span class="user">小Y：</span>英国艺术家 Jane Perkins 能利用很多不起眼的东西进行创作，甚至是垃圾。首饰、纽扣、玩具等等都可以作为他创作的工具并创作出惟妙惟肖的画作，丝毫不逊色于色彩丰富的颜料。
+              <span class="user">小Y：</span>英国艺术家 Jane Perkin 能利用很多不起眼的东西进行创作，甚至是垃圾。首饰、纽扣、玩具等等都可以作为他创作的工具并创作出惟妙惟肖的画作，丝毫不逊色于色彩丰富的颜料。
             </p>
           </div>
           <div class="info clearfix">
