@@ -3,7 +3,7 @@
     <router-link class="writeMsg" to="/SendForm">我要发表朋友圈</router-link>
 
     <div id="list">
-      <!-- <div class="box clearfix">
+      <div class="box clearfix">
         <a class="close" href="javascript:;">×</a>
         <img
           class="head"
@@ -111,24 +111,38 @@
             </span>
           </div>
         </div>
-      </div> -->
-
+      </div>
+      <el-dialog
+        title="预览文件"
+        :visible.sync="isViewPdf20"
+        :before-close="handleClose"
+        :fullscreen="false"
+      >
+        <iframe :src="picUrl" frameborder="0" style="width: 50vw; height: 120vh"></iframe>
+      </el-dialog>
 
       <div v-for="item in test" v-bind:key="item.id" class="box clearfix">
         <a class="close" href="javascript:;">×</a>
-        <img
-          class="head"
-          v-bind:src="item.toppicurl"
-          alt
-        />
+        <img class="head" v-bind:src="'http://fdfs.tiger2.cn/'+item.toppicurl" alt />
         <div class="content">
           <div class="main">
             <p class="txt">
-              <span class="user">小Y：</span>英国艺术家 Jane Perkin 能利用很多不起眼的东西进行创作，甚至是垃圾。首饰、纽扣、玩具等等都可以作为他创作的工具并创作出惟妙惟肖的画作，丝毫不逊色于色彩丰富的颜料。
+              <span class="user">{{item.username}}：</span>
+              {{item.content}}
             </p>
+            <ul>
+              <li style="float:left;" v-for="child in item.pictures" v-bind:key="child.id">
+                <img
+                  @click="review($event)"
+                  class="pic"
+                  :src="'http://fdfs.tiger2.cn/'+child.picurl"
+                  alt
+                />
+              </li>
+            </ul>
           </div>
           <div class="info clearfix">
-            <span class="time">02-11 13:17</span>
+            <span class="time">{{item.times}}</span>
             <a class="praise" href="javascript:;">赞</a>
           </div>
           <div class="praises-total" total="0" style="display: none;"></div>
@@ -154,25 +168,31 @@ export default {
   data() {
     return {
       loading: true,
-      test:[]
+      test: [],
+      srcValue:'',
+      isViewPdf20:false,
+      picUrl:''
     };
   },
   methods: {
-   
+    review(e) {
+      console.log(e.srcElement.currentSrc);
+      this.isViewPdf20=true;
+      this.picUrl=e.srcElement.currentSrc;
+    }
   },
   created() {
-     // axios请求开始
-        this.axios
-          .post("/api/lifespace/getAllContent")
-          .then(response => {
-            console.log(response.data);
-            this.test=response.data;
-          })
-          .catch(function(error) {
-            this.$message.error('服务器发生故障');
-
-          });
-        // axios请求结束
+    // axios请求开始
+    this.axios
+      .post("/api/lifespace/getAllContent")
+      .then(response => {
+        console.log(response);
+        this.test = response.data;
+      })
+      .catch(function(error) {
+        this.$message.error("服务器发生故障");
+      });
+    // axios请求结束
   }
 };
 </script>
@@ -180,6 +200,17 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <!-- style加上scoped表示此css样式只在本模块中有效 -->
 <style scoped>
+li {
+  list-style: none;
+  float: left;
+  width: 33.3%; /*三列图片排列*/
+  height: 100px; /*当图片尺寸不一的时候，设置一个高度*/
+  overflow: hidden; /*超出隐藏*/
+}
+
+li img {
+  width: 100%;
+}
 .writeMsg {
   font-size: 12px;
   position: absolute;
