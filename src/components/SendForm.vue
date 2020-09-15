@@ -12,6 +12,7 @@
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :file-list="fileList"
+        :headers="importHeaders"
         :on-success="uploadSuccess"
         list-type="picture"
       >
@@ -29,13 +30,15 @@
 </template>
 
 <script>
+var myToken = window.localStorage.getItem("token");
 export default {
   name: "SendForm",
   data() {
     return {
       content: "",
       fileList: [],
-      picList: []
+      picList: [],
+      importHeaders: { token: myToken }
     };
   },
   methods: {
@@ -56,31 +59,44 @@ export default {
         console.log(this.fileList);
 
         // axios请求开始
+        var token = window.localStorage.getItem("token");
+        this.axios.defaults.headers.common["token"] = token;
         this.axios
           .post("/api/lifespace/saveContent", {
+            user: window.localStorage.getItem("account"),
             content: this.content,
             picList: this.picList
           })
           .then(response => {
-            console.log(response.data);
-            if (response.data == 1) {
-              this.$message({
-                message: "发送成功",
-                type: "success"
+            var code = response.data.errorCode;
+            if (code == "101") {
+              this.$alert("token失效，请重新登录", "警告", {
+                confirmButtonText: "确定",
+                callback: action => {
+                  this.$router.replace({ path: "/" });
+                }
               });
-              this.$router.go(-1);
+            } else {
+              console.log(response.data);
+              if (response.data == 1) {
+                this.$message({
+                  message: "发送成功",
+                  type: "success"
+                });
+                this.$router.go(-1);
+              }
             }
           })
           .catch(function(error) {
-            this.$message.error('服务器发生故障');
-
+            this.$message.error("服务器发生故障");
           });
         // axios请求结束
       }
     },
     handleRemove(file, fileList) {
       console.log("删除图片触发");
-      console.log(file, fileList);
+      console.log(file);
+    
     },
     handlePreview(file) {
       console.log("222222222");

@@ -1,9 +1,10 @@
 <template>
   <div id="lalala">
     <router-link class="writeMsg" to="/SendForm">我要发表朋友圈</router-link>
+    <el-button class="writeMsg1" type="text" @click="open">退朝</el-button>
 
     <div id="list">
-      <div class="box clearfix">
+      <!-- <div class="box clearfix">
         <a class="close" href="javascript:;">×</a>
         <img
           class="head"
@@ -111,11 +112,10 @@
             </span>
           </div>
         </div>
-      </div>
+      </div>-->
       <el-dialog
         title="预览文件"
         :visible.sync="isViewPdf20"
-        :before-close="handleClose"
         :fullscreen="false"
       >
         <iframe :src="picUrl" frameborder="0" style="width: 50vw; height: 120vh"></iframe>
@@ -169,25 +169,58 @@ export default {
     return {
       loading: true,
       test: [],
-      srcValue:'',
-      isViewPdf20:false,
-      picUrl:''
+      srcValue: "",
+      isViewPdf20: false,
+      picUrl: ""
     };
   },
   methods: {
+    open() {
+      this.$confirm("您铁定了心要退朝吗？, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "已退朝!"
+          });
+          this.$router.replace({ path: "/" });
+          window.localStorage.clear();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "算了"
+          });
+        });
+    },
     review(e) {
       console.log(e.srcElement.currentSrc);
-      this.isViewPdf20=true;
-      this.picUrl=e.srcElement.currentSrc;
+      this.isViewPdf20 = true;
+      this.picUrl = e.srcElement.currentSrc;
     }
   },
   created() {
     // axios请求开始
+    var token = window.localStorage.getItem("token");
+    this.axios.defaults.headers.common["token"] = token;
     this.axios
       .post("/api/lifespace/getAllContent")
       .then(response => {
-        console.log(response);
-        this.test = response.data;
+        var code = response.data.errorCode;
+        if (code == "101") {
+          this.$alert("token失效，请重新登录", "警告", {
+            confirmButtonText: "确定",
+            callback: action => {
+               this.$router.replace({ path: "/" });
+            }
+          });
+        } else {
+          console.log(response);
+          this.test = response.data;
+        }
       })
       .catch(function(error) {
         this.$message.error("服务器发生故障");
@@ -226,7 +259,27 @@ li img {
   cursor: pointer;
   color: gray;
 }
+.writeMsg1 {
+  font-size: 12px;
+  position: absolute;
+  right: 15%;
+  top: 30px;
+  border: 1px solid lightgray;
+  height: 30px;
+  width: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: gray;
+}
 .writeMsg:hover {
+  background-color: #ff0000;
+  color: white;
+}
+.writeMsg1:hover {
   background-color: #ff0000;
   color: white;
 }
