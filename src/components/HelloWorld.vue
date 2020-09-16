@@ -10,8 +10,8 @@
     </div>
 
     <div id="list">
-      <el-dialog title="预览文件" :visible.sync="isViewPdf20" :fullscreen="false">
-        <iframe :src="picUrl" frameborder="0" style="width: 50vw; height: 120vh"></iframe>
+      <el-dialog title="预览文件" :visible.sync="isViewPdf20" width="30%" :fullscreen="false">
+        <img :src="picUrl" frameborder="0" style="width: 100%; height: 100%;" />
       </el-dialog>
 
       <div v-for="(item,index) in test" v-bind:key="item.id" class="box clearfix">
@@ -37,7 +37,13 @@
           <div class="content">
             <div class="info clearfix">
               <span class="time">{{item.times}}</span>
-              <a class="praise" @click="zan($event)" :id="item.id" :index="index" href="javascript:;">赞</a>
+              <a
+                class="praise"
+                @click="zan($event)"
+                :id="item.id"
+                :data-index="index"
+                href="javascript:;"
+              >赞</a>
               <!-- <a class="praise" @click="zan($event)" :id="item.id" href="javascript:;">取消赞</a> -->
             </div>
             <div class="praises-total" total="0" style="display: none;"></div>
@@ -45,15 +51,17 @@
             <div class="praises-total" total="4" style="display: block;">{{item.zan}}个人觉得很赞</div>
 
             <div class="comment-list">
-              <div v-for="childtwo in item.contentList" v-bind:key="childtwo.id" class="comment-box clearfix" user="self">
-                <img
-                  class="myhead"
-                  :src="'http://fdfs.tiger2.cn/'+childtwo.userpicurl"
-                  alt
-                />
+              <div
+                v-for="childtwo in item.contentList"
+                v-bind:key="childtwo.id"
+                class="comment-box clearfix"
+                user="self"
+              >
+                <img class="myhead" :src="'http://fdfs.tiger2.cn/'+childtwo.userpicurl" alt />
                 <div class="comment-content">
                   <p class="comment-text">
-                    <span class="user">{{childtwo.account}}：</span>{{childtwo.pinglun}}
+                    <span class="user">{{childtwo.account}}：</span>
+                    {{childtwo.pinglun}}
                   </p>
                   <p class="comment-time">{{childtwo.pltime}}</p>
                 </div>
@@ -93,54 +101,65 @@ export default {
   },
   methods: {
     huifu(e) {
-      if (this.comment == null ||this.comment == "评论..." ||this.comment == undefined) {
+      if (
+        this.comment == null ||
+        this.comment == "评论..." ||
+        this.comment == undefined
+      ) {
         this.$message({
           message: "评论内容不许为空",
           type: "error"
         });
-      }else{
+      } else {
         // axios请求开始
-      var token = window.localStorage.getItem("token");
-      this.axios.defaults.headers.common["token"] = token;
-      this.axios
-        .post("/api/lifespace/insertPingLun", {
-          user: window.localStorage.getItem("account"),
-          contentid: e.currentTarget.id,
-          pinglun: this.comment,
-          userpicurl:window.localStorage.getItem("touxiang"),
-          account:window.localStorage.getItem("username")
-        })
-        .then(response => {
-          var code = response.data.errorCode;
-          if (code == "101") {
-            this.$alert("token失效，请重新登录", "警告", {
-              confirmButtonText: "确定",
-              callback: action => {
-                _this.$router.push({ path: "/" });
-              }
-            });
-          } else {
-            console.log(response);
-            if (response.data === 1) {
-              this.$message({
-                message: "评论成功",
-                type: "success"
+        var token = window.localStorage.getItem("token");
+        this.axios.defaults.headers.common["token"] = token;
+        this.axios
+          .post("/api/lifespace/insertPingLun", {
+            user: window.localStorage.getItem("account"),
+            contentid: e.currentTarget.id,
+            pinglun: this.comment,
+            userpicurl: window.localStorage.getItem("touxiang"),
+            account: window.localStorage.getItem("username")
+          })
+          .then(response => {
+            var code = response.data.errorCode;
+            if (code == "101") {
+              this.$alert("token失效，请重新登录", "警告", {
+                confirmButtonText: "确定",
+                callback: action => {
+                  _this.$router.push({ path: "/" });
+                }
               });
+            } else {
+              console.log(response);
+              if (response.data === 1) {
+                this.$message({
+                  message: "评论成功",
+                  type: "success"
+                });
+                console.log(response);
+                this.axios
+                  .post("/api/lifespace/getAllContent")
+                  .then(response => {
+                    var code = response.data.errorCode;
+                    console.log(response);
+                    this.test = response.data;
+                  });
+              }
             }
-          }
-        })
-        .catch(function(error) {
-          this.$message.error("服务器发生故障");
-        });
-      // axios请求结束
-      this.comment='评论...';
-      
+          })
+          .catch(function(error) {
+            this.$message.error("服务器发生故障");
+          });
+        // axios请求结束
+        this.comment = "评论...";
       }
-      
     },
     zan(e) {
       console.log(e.currentTarget.id);
-      console.log(e.currentTarget.index);
+      const index = e.target.getAttribute("data-index");
+
       var _this = this;
       // axios请求开始
       var token = window.localStorage.getItem("token");
@@ -161,14 +180,17 @@ export default {
             });
           } else {
             console.log(response);
+            this.axios.post("/api/lifespace/getAllContent").then(response => {
+              var code = response.data.errorCode;
+              console.log(response);
+              this.test = response.data;
+            });
           }
         })
         .catch(function(error) {
           this.$message.error("服务器发生故障");
         });
       // axios请求结束
-    
-      
     },
     open() {
       this.$confirm("您铁定了心要退朝吗？, 是否继续?", "提示", {
