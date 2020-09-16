@@ -2,127 +2,20 @@
   <div id="lalala">
     <router-link class="writeMsg" to="/SendForm">我要发表朋友圈</router-link>
     <el-button class="writeMsg1" type="text" @click="open">退朝</el-button>
+    <div class="writeMsg2">
+      <div>
+        <img :src="'http://fdfs.tiger2.cn/'+touxiang" alt />
+      </div>
+      <span>{{username}}</span>
+    </div>
 
     <div id="list">
-      <!-- <div class="box clearfix">
-        <a class="close" href="javascript:;">×</a>
-        <img
-          class="head"
-          src="https://www.17sucai.com/preview/639532/2016-10-25/54aa535f0001a6df00000000/images/1.jpg"
-          alt
-        />
-        <div class="content">
-          <div class="main">
-            <p class="txt">
-              <span class="user">Andy：</span>轻轻的我走了，正如我轻轻的来；我轻轻的招手，作别西天的云彩。
-            </p>
-            <img
-              class="pic"
-              src="https://www.17sucai.com/preview/639532/2016-10-25/54aa535f0001a6df00000000/images/img1.jpg"
-              alt
-            />
-          </div>
-          <div class="info clearfix">
-            <span class="time">02-14 23:01</span>
-            <a class="praise" href="javascript:;">赞</a>
-          </div>
-          <div class="praises-total" total="4" style="display: block;">4个人觉得很赞</div>
-          <div class="comment-list">
-            <div class="comment-box clearfix" user="self">
-              <img
-                class="myhead"
-                src="https://www.17sucai.com/preview/639532/2016-10-25/54aa535f0001a6df00000000/images/my.jpg"
-                alt
-              />
-              <div class="comment-content">
-                <p class="comment-text">
-                  <span class="user">我：</span>写的太好了。
-                </p>
-                <p class="comment-time">
-                  2014-02-19 14:36
-                  <a
-                    href="javascript:;"
-                    class="comment-praise"
-                    total="1"
-                    my="0"
-                    style="display: inline-block"
-                  >1 赞</a>
-                  <a href="javascript:;" class="comment-operate">删除</a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="text-box">
-            <textarea class="comment" autocomplete="off">评论…</textarea>
-            <button class="btn">回 复</button>
-            <span class="word">
-              <span class="length">0</span>/140
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="box clearfix">
-        <a class="close" href="javascript:;">×</a>
-        <img
-          class="head"
-          src="https://www.17sucai.com/preview/639532/2016-10-25/54aa535f0001a6df00000000/images/2.jpg"
-          alt
-        />
-        <div class="content">
-          <div class="main">
-            <p class="txt">
-              <span class="user">人在旅途：</span>三亚的海滩很漂亮。
-            </p>
-            <img
-              class="pic"
-              src="https://www.17sucai.com/preview/639532/2016-10-25/54aa535f0001a6df00000000/images/img5.jpg"
-              alt
-            />
-          </div>
-          <div class="info clearfix">
-            <span class="time">02-14 23:01</span>
-            <a class="praise" href="javascript:;">赞</a>
-          </div>
-          <div class="praises-total" total="0" style="display: none;"></div>
-          <div class="comment-list">
-            <div class="comment-box clearfix" user="other">
-              <img
-                class="myhead"
-                src="https://www.17sucai.com/preview/639532/2016-10-25/54aa535f0001a6df00000000/images/4.jpg"
-                alt
-              />
-              <div class="comment-content">
-                <p class="comment-text">
-                  <span class="user">老鹰：</span>我也想去三亚。
-                </p>
-                <p class="comment-time">
-                  2014-02-19 14:36
-                  <a href="javascript:;" class="comment-praise" total="0" my="0">赞</a>
-                  <a href="javascript:;" class="comment-operate">回复</a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="text-box">
-            <textarea class="comment" autocomplete="off">评论…</textarea>
-            <button class="btn">回 复</button>
-            <span class="word">
-              <span class="length">0</span>/140
-            </span>
-          </div>
-        </div>
-      </div>-->
-      <el-dialog
-        title="预览文件"
-        :visible.sync="isViewPdf20"
-        :fullscreen="false"
-      >
+      <el-dialog title="预览文件" :visible.sync="isViewPdf20" :fullscreen="false">
         <iframe :src="picUrl" frameborder="0" style="width: 50vw; height: 120vh"></iframe>
       </el-dialog>
 
-      <div v-for="item in test" v-bind:key="item.id" class="box clearfix">
-        <a class="close" href="javascript:;">×</a>
+      <div v-for="(item,index) in test" v-bind:key="item.id" class="box clearfix">
+        <!-- <a class="close" href="javascript:;">×</a> -->
         <img class="head" v-bind:src="'http://fdfs.tiger2.cn/'+item.toppicurl" alt />
         <div class="content">
           <div class="main">
@@ -141,18 +34,39 @@
               </li>
             </ul>
           </div>
-          <div class="info clearfix">
-            <span class="time">{{item.times}}</span>
-            <a class="praise" href="javascript:;">赞</a>
-          </div>
-          <div class="praises-total" total="0" style="display: none;"></div>
-          <div class="comment-list"></div>
-          <div class="text-box">
-            <textarea class="comment" autocomplete="off">评论…</textarea>
-            <button class="btn">回 复</button>
-            <span class="word">
-              <span class="length">0</span>/140
-            </span>
+          <div class="content">
+            <div class="info clearfix">
+              <span class="time">{{item.times}}</span>
+              <a class="praise" @click="zan($event)" :id="item.id" :index="index" href="javascript:;">赞</a>
+              <!-- <a class="praise" @click="zan($event)" :id="item.id" href="javascript:;">取消赞</a> -->
+            </div>
+            <div class="praises-total" total="0" style="display: none;"></div>
+            <!-- 评论开始 -->
+            <div class="praises-total" total="4" style="display: block;">{{item.zan}}个人觉得很赞</div>
+
+            <div class="comment-list">
+              <div v-for="childtwo in item.contentList" v-bind:key="childtwo.id" class="comment-box clearfix" user="self">
+                <img
+                  class="myhead"
+                  :src="'http://fdfs.tiger2.cn/'+childtwo.userpicurl"
+                  alt
+                />
+                <div class="comment-content">
+                  <p class="comment-text">
+                    <span class="user">{{childtwo.account}}：</span>{{childtwo.pinglun}}
+                  </p>
+                  <p class="comment-time">{{childtwo.pltime}}</p>
+                </div>
+              </div>
+            </div>
+            <!-- 评论结束 -->
+            <div class="text-box">
+              <textarea class="comment" v-model="comment" autocomplete="off">评论…</textarea>
+              <button class="btn" @click="huifu($event)" :id="item.id">回 复</button>
+              <span class="word">
+                <span class="length">0</span>/140
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -171,10 +85,91 @@ export default {
       test: [],
       srcValue: "",
       isViewPdf20: false,
-      picUrl: ""
+      picUrl: "",
+      touxiang: "",
+      username: "",
+      comment: "评论..."
     };
   },
   methods: {
+    huifu(e) {
+      if (this.comment == null ||this.comment == "评论..." ||this.comment == undefined) {
+        this.$message({
+          message: "评论内容不许为空",
+          type: "error"
+        });
+      }else{
+        // axios请求开始
+      var token = window.localStorage.getItem("token");
+      this.axios.defaults.headers.common["token"] = token;
+      this.axios
+        .post("/api/lifespace/insertPingLun", {
+          user: window.localStorage.getItem("account"),
+          contentid: e.currentTarget.id,
+          pinglun: this.comment,
+          userpicurl:window.localStorage.getItem("touxiang"),
+          account:window.localStorage.getItem("username")
+        })
+        .then(response => {
+          var code = response.data.errorCode;
+          if (code == "101") {
+            this.$alert("token失效，请重新登录", "警告", {
+              confirmButtonText: "确定",
+              callback: action => {
+                _this.$router.push({ path: "/" });
+              }
+            });
+          } else {
+            console.log(response);
+            if (response.data === 1) {
+              this.$message({
+                message: "评论成功",
+                type: "success"
+              });
+            }
+          }
+        })
+        .catch(function(error) {
+          this.$message.error("服务器发生故障");
+        });
+      // axios请求结束
+      this.comment='评论...';
+      
+      }
+      
+    },
+    zan(e) {
+      console.log(e.currentTarget.id);
+      console.log(e.currentTarget.index);
+      var _this = this;
+      // axios请求开始
+      var token = window.localStorage.getItem("token");
+      this.axios.defaults.headers.common["token"] = token;
+      this.axios
+        .post("/api/lifespace/dianzan", {
+          user: window.localStorage.getItem("account"),
+          contentid: e.currentTarget.id
+        })
+        .then(response => {
+          var code = response.data.errorCode;
+          if (code == "101") {
+            this.$alert("token失效，请重新登录", "警告", {
+              confirmButtonText: "确定",
+              callback: action => {
+                _this.$router.push({ path: "/" });
+              }
+            });
+          } else {
+            console.log(response);
+          }
+        })
+        .catch(function(error) {
+          this.$message.error("服务器发生故障");
+        });
+      // axios请求结束
+    
+      
+    },
     open() {
       this.$confirm("您铁定了心要退朝吗？, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -203,6 +198,11 @@ export default {
     }
   },
   created() {
+    const touxiang = window.localStorage.getItem("touxiang");
+    const username = window.localStorage.getItem("username");
+    this.touxiang = touxiang;
+    this.username = username;
+    var _this = this;
     // axios请求开始
     var token = window.localStorage.getItem("token");
     this.axios.defaults.headers.common["token"] = token;
@@ -214,7 +214,7 @@ export default {
           this.$alert("token失效，请重新登录", "警告", {
             confirmButtonText: "确定",
             callback: action => {
-               this.$router.replace({ path: "/" });
+              _this.$router.push({ path: "/" });
             }
           });
         } else {
@@ -274,6 +274,32 @@ li img {
   border-radius: 20px;
   cursor: pointer;
   color: gray;
+}
+.writeMsg2 {
+  font-size: 12px;
+  position: absolute;
+  right: 5%;
+  top: 30px;
+  height: 30px;
+  width: 115px;
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 30px;
+  cursor: pointer;
+  color: gray;
+}
+.writeMsg2 div {
+  border-radius: 90px;
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  overflow: hidden;
+  /* border: 1px solid lightgray; */
+}
+.writeMsg2 div img {
+  width: 100%;
+  height: 100%;
 }
 .writeMsg:hover {
   background-color: #ff0000;
@@ -453,7 +479,8 @@ a:hover {
 .text-box .btn {
   font-size: 12px;
   font-weight: bold;
-  display: none;
+  display: block;
+  cursor: pointer;
   float: right;
   width: 65px;
   height: 25px;

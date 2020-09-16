@@ -89,10 +89,13 @@ export default {
               console.log(response.data);
               if (response.data == 1) {
                 this.$message({
-                  message: "发送成功",
+                  message: "注册成功",
                   type: "success"
                 });
-                this.$router.go(-1);
+                this.imageUrl='',
+                this.loginForm.username='',
+                this.loginForm.account='',
+                this.loginForm.password=''
               }
             }
           })
