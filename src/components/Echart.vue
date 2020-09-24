@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="myMap" ref="myMap" style="width: 600px; height: 300px;"></div>
-    我选中的是城市{{city}}
+    <div id="myMap" ref="myMap" style="width: 600px; height: 300px;margin:0 auto;"></div>
+    
   </div>
 </template>
  
@@ -20,24 +20,21 @@ export default {
   name: "Echart",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
-      chart: null,
-      city:''
+     
+      
     };
   },
   created() {},
   mounted() {
-    var _this=this;
+    var _this = this;
     this.drawChinaMap();
-    var calendarChart = this.$echarts.init(
-      document.getElementById("myMap")
-    );
-
+    var calendarChart = this.$echarts.init(document.getElementById("myMap"));
     calendarChart.on("click", function(param) {
-      console.log(param.name);
-      _this.city=param.name
+      console.log(param);
+     
     });
-    
+
+        
   },
   updated() {
     if (!this.chart) {
@@ -59,7 +56,11 @@ export default {
         "macarons"
       );
       this.chart.setOption(option);
+window.addEventListener('resize', () => { // 这里用箭头函数
+	      this.chart.resize()
+	    })
     }
+    
   }
 };
 </script>

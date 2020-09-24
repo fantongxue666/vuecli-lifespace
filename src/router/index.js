@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import SendForm from '@/components/SendForm'
 import Login from '@/components/Login'
 import Echart from '@/components/Echart'
+import identify from '@/components/identify'
 import Register from '@/components/Register'
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/Echart',
       name: 'Echart',
       component: Echart
+    },
+    {
+      path: '/identify',
+      name: 'identify',
+      component: identify
     }
    
   ]
