@@ -32,15 +32,19 @@ export default {
     return {
       loginForm: {
         username: "",
-        password: ""
+        password: "",
+        base_api:""
       },
       responseResult: []
     };
   },
+  mounted(){
+    this.base_api = process.env.VUE_APP_BASE_API
+  },
   methods: {
     login() {
       this.axios
-        .post("/api/lifespace/login", {
+        .post(this.base_api+"/lifespace/login", {
           userName: this.loginForm.username,
           passWord: this.loginForm.password
         })

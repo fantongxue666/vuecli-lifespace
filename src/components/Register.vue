@@ -18,7 +18,7 @@
     <div style="float:left;height:100px;width:80px;line-height:100px;text-align:center;margin-bottom:20px;font-size:13px;color:gray;">上传头像</div>
     <el-upload 
       class="avatar-uploader"
-      action="/api/lifespace/uploadImage"
+      :action='this.base_api+"/lifespace/uploadImage"'
       name="file"
       :show-file-list="false"
       :on-success="uploadSuccess"
@@ -55,9 +55,13 @@ export default {
         account: "",
         password: "",
         checkPass: "",
+        base_api:""
       },
       responseResult: []
     };
+  },
+   mounted(){
+    this.base_api = process.env.VUE_APP_BASE_API
   },
   methods: {
     register(){
@@ -69,7 +73,7 @@ export default {
         var token = window.localStorage.getItem("token");
         this.axios.defaults.headers.common["token"] = token;
         this.axios
-          .post("/api/lifespace/register", {
+          .post(this.base_api+"/lifespace/register", {
             user: window.localStorage.getItem("account"),
              username:this.loginForm.username,
              account:this.loginForm.account,

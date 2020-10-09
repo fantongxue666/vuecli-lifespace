@@ -96,8 +96,12 @@ export default {
       picUrl: "",
       touxiang: "",
       username: "",
-      comment: "评论..."
+      comment: "评论...",
+      base_api:""
     };
+  },
+   mounted(){
+    this.base_api = process.env.VUE_APP_BASE_API
   },
   methods: {
     huifu(e) {
@@ -115,7 +119,7 @@ export default {
         var token = window.localStorage.getItem("token");
         this.axios.defaults.headers.common["token"] = token;
         this.axios
-          .post("/api/lifespace/insertPingLun", {
+          .post(this.base_api+"/lifespace/insertPingLun", {
             user: window.localStorage.getItem("account"),
             contentid: e.currentTarget.id,
             pinglun: this.comment,
@@ -140,7 +144,7 @@ export default {
                 });
                 console.log(response);
                 this.axios
-                  .post("/api/lifespace/getAllContent")
+                  .post(this.base_api+"/lifespace/getAllContent")
                   .then(response => {
                     var code = response.data.errorCode;
                     console.log(response);
@@ -165,7 +169,7 @@ export default {
       var token = window.localStorage.getItem("token");
       this.axios.defaults.headers.common["token"] = token;
       this.axios
-        .post("/api/lifespace/dianzan", {
+        .post(this.base_api+"/lifespace/dianzan", {
           user: window.localStorage.getItem("account"),
           contentid: e.currentTarget.id
         })
@@ -180,7 +184,7 @@ export default {
             });
           } else {
             console.log(response);
-            this.axios.post("/api/lifespace/getAllContent").then(response => {
+            this.axios.post(this.base_api+"/lifespace/getAllContent").then(response => {
               var code = response.data.errorCode;
               console.log(response);
               this.test = response.data;
@@ -229,7 +233,7 @@ export default {
     var token = window.localStorage.getItem("token");
     this.axios.defaults.headers.common["token"] = token;
     this.axios
-      .post("/api/lifespace/getAllContent")
+      .post(process.env.VUE_APP_BASE_API+"/lifespace/getAllContent")
       .then(response => {
         var code = response.data.errorCode;
         if (code == "101") {

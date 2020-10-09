@@ -7,7 +7,7 @@
 
       <el-upload
         class="upload-demo"
-        action="/api/lifespace/uploadImage"
+        :action='this.base_api+"/lifespace/uploadImage"'
         name="file"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
@@ -38,8 +38,12 @@ export default {
       content: "",
       fileList: [],
       picList: [],
-      importHeaders: { token: myToken }
+      importHeaders: { token: myToken },
+      base_api:""
     };
+  },
+  mounted(){
+    this.base_api = process.env.VUE_APP_BASE_API
   },
   methods: {
     uploadSuccess(response, file, fileList) {
@@ -62,7 +66,7 @@ export default {
         var token = window.localStorage.getItem("token");
         this.axios.defaults.headers.common["token"] = token;
         this.axios
-          .post("/api/lifespace/saveContent", {
+          .post(this.base_api+"/lifespace/saveContent", {
             user: window.localStorage.getItem("account"),
             content: this.content,
             picList: this.picList
