@@ -231,6 +231,7 @@ export default {
     var _this = this;
     // axios请求开始
     var token = window.localStorage.getItem("token");
+    console.log("token:"+token);
     this.axios.defaults.headers.common["token"] = token;
     this.axios
       .post(process.env.VUE_APP_BASE_API+"/lifespace/getAllContent")
