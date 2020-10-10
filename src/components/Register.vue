@@ -1,7 +1,7 @@
 <template>
 <body id="poster">
   <el-form class="login-container" label-position="left" label-width="0px">
-    <h3 class="login_title">系统注册</h3>
+    <h3 class="login_title">你他妈还没有注册？赶紧注册</h3>
     <el-form-item>
       <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="起一个昵称吧？"></el-input>
     </el-form-item>
@@ -160,8 +160,8 @@ export default {
   color: #505458;
 }
 #poster {
-  /* background:url("../assets/eva.jpg") no-repeat; */
-  background-color: lightgray;
+   background:url("../assets/timg.jpg") no-repeat;
+
   background-position: center;
   height: 100%;
   width: 100%;
