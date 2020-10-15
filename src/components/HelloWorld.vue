@@ -1,13 +1,6 @@
 <template>
   <div id="lalala">
-    <router-link class="writeMsg" to="/SendForm">我要发表朋友圈</router-link>
-    <el-button class="writeMsg1" type="text" @click="open">退朝</el-button>
-    <div class="writeMsg2">
-      <div>
-        <img :src="'http://fdfs.tiger2.cn/'+touxiang" alt />
-      </div>
-      <span>{{username}}</span>
-    </div>
+    <top v-bind:touxiang="touxiang" v-bind:username="username"></top>
 
     <div id="list">
       <el-dialog title="预览文件" :visible.sync="isViewPdf20" width="30%" :fullscreen="false">
@@ -85,7 +78,11 @@
 
 <script>
 import { Loading } from "element-ui";
+import Top from "./Top";
 export default {
+  components:{
+    top:Top
+  },
   name: "HelloWorld",
   data() {
     return {
@@ -97,11 +94,11 @@ export default {
       touxiang: "",
       username: "",
       comment: "评论...",
-      base_api:""
+      base_api: ""
     };
   },
-   mounted(){
-    this.base_api = process.env.VUE_APP_BASE_API
+  mounted() {
+    this.base_api = process.env.VUE_APP_BASE_API;
   },
   methods: {
     huifu(e) {
@@ -119,7 +116,7 @@ export default {
         var token = window.localStorage.getItem("token");
         this.axios.defaults.headers.common["token"] = token;
         this.axios
-          .post(this.base_api+"/lifespace/insertPingLun", {
+          .post(this.base_api + "/lifespace/insertPingLun", {
             user: window.localStorage.getItem("account"),
             contentid: e.currentTarget.id,
             pinglun: this.comment,
@@ -144,7 +141,7 @@ export default {
                 });
                 console.log(response);
                 this.axios
-                  .post(this.base_api+"/lifespace/getAllContent")
+                  .post(this.base_api + "/lifespace/getAllContent")
                   .then(response => {
                     var code = response.data.errorCode;
                     console.log(response);
@@ -169,7 +166,7 @@ export default {
       var token = window.localStorage.getItem("token");
       this.axios.defaults.headers.common["token"] = token;
       this.axios
-        .post(this.base_api+"/lifespace/dianzan", {
+        .post(this.base_api + "/lifespace/dianzan", {
           user: window.localStorage.getItem("account"),
           contentid: e.currentTarget.id
         })
@@ -184,11 +181,13 @@ export default {
             });
           } else {
             console.log(response);
-            this.axios.post(this.base_api+"/lifespace/getAllContent").then(response => {
-              var code = response.data.errorCode;
-              console.log(response);
-              this.test = response.data;
-            });
+            this.axios
+              .post(this.base_api + "/lifespace/getAllContent")
+              .then(response => {
+                var code = response.data.errorCode;
+                console.log(response);
+                this.test = response.data;
+              });
           }
         })
         .catch(function(error) {
@@ -196,27 +195,7 @@ export default {
         });
       // axios请求结束
     },
-    open() {
-      this.$confirm("您铁定了心要退朝吗？, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "已退朝!"
-          });
-          this.$router.replace({ path: "/" });
-          window.localStorage.clear();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "算了"
-          });
-        });
-    },
+    
     review(e) {
       console.log(e.srcElement.currentSrc);
       this.isViewPdf20 = true;
@@ -231,10 +210,10 @@ export default {
     var _this = this;
     // axios请求开始
     var token = window.localStorage.getItem("token");
-    console.log("token:"+token);
+    console.log("token:" + token);
     this.axios.defaults.headers.common["token"] = token;
     this.axios
-      .post(process.env.VUE_APP_BASE_API+"/lifespace/getAllContent")
+      .post(process.env.VUE_APP_BASE_API + "/lifespace/getAllContent")
       .then(response => {
         var code = response.data.errorCode;
         if (code == "101") {
@@ -271,71 +250,7 @@ li {
 li img {
   width: 100%;
 }
-.writeMsg {
-  font-size: 12px;
-  position: absolute;
-  right: 20%;
-  top: 30px;
-  border: 1px solid lightgray;
-  height: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-align: center;
-  line-height: 30px;
-  border-radius: 20px;
-  cursor: pointer;
-  color: gray;
-}
-.writeMsg1 {
-  font-size: 12px;
-  position: absolute;
-  right: 15%;
-  top: 30px;
-  border: 1px solid lightgray;
-  height: 30px;
-  width: 60px;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-align: center;
-  line-height: 30px;
-  border-radius: 20px;
-  cursor: pointer;
-  color: gray;
-}
-.writeMsg2 {
-  font-size: 12px;
-  position: absolute;
-  right: 5%;
-  top: 30px;
-  height: 30px;
-  width: 115px;
-  padding-left: 10px;
-  padding-right: 10px;
-  line-height: 30px;
-  cursor: pointer;
-  color: gray;
-}
-.writeMsg2 div {
-  border-radius: 90px;
-  float: left;
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-  overflow: hidden;
-  /* border: 1px solid lightgray; */
-}
-.writeMsg2 div img {
-  width: 100%;
-  height: 100%;
-}
-.writeMsg:hover {
-  background-color: #ff0000;
-  color: white;
-}
-.writeMsg1:hover {
-  background-color: #ff0000;
-  color: white;
-}
+
 #list {
   font-size: 12px;
 }

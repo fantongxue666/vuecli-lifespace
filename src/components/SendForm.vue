@@ -1,6 +1,7 @@
 <template>
-  <div style="width:60%;margin:auto;padding-top:50px;">
-    <el-form label-width="80px">
+  <div style="width:100%;margin:auto;">
+    <top v-bind:touxiang="touxiang" v-bind:username="username"></top>
+    <el-form style="margin-top:100px;width:60%;margin:auto;" label-width="80px">
       <el-form-item label="发表内容">
         <el-input type="textarea" v-model="content"></el-input>
       </el-form-item>
@@ -30,17 +31,29 @@
 </template>
 
 <script>
+import Top from "./Top";
 var myToken = window.localStorage.getItem("token");
 export default {
   name: "SendForm",
+  components:{
+    top:Top
+  },
   data() {
     return {
       content: "",
       fileList: [],
       picList: [],
       importHeaders: { token: myToken },
-      base_api:""
+      base_api:"",
+      touxiang:"",
+      username:""
     };
+  },
+  created(){
+    const touxiang = window.localStorage.getItem("touxiang");
+    const username = window.localStorage.getItem("username");
+    this.touxiang = touxiang;
+    this.username = username;
   },
   mounted(){
     this.base_api = process.env.VUE_APP_BASE_API
@@ -111,7 +124,7 @@ export default {
 </script>
 <style scoped>
 .mainss {
-  width: 60%;
+  width: 100%;
   border: 1px solid black;
   height: 500px;
   margin: auto;

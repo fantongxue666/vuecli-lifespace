@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target:'http://vue.tiger2.cn',
+        target:'http://localhost:8082',
         changeOrigin:true,
         pathRewrite:{
           '^/api':''
