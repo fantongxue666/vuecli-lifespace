@@ -16,7 +16,13 @@
             {{username}}
         </template>
         <el-menu-item index="2-1">
+            <router-link to="/HelloWorld" style="color:black;">动态列表</router-link>
+        </el-menu-item>
+        <el-menu-item index="2-1">
             <router-link to="/SendForm" style="color:black;">发表动态</router-link>
+        </el-menu-item>
+        <el-menu-item index="2-1">
+            <router-link to="/Chat" style="color:black;">实时聊天</router-link>
         </el-menu-item>
         <el-menu-item index="2-2">
             <el-button type="text" @click="open" style="color:black;">退出</el-button>

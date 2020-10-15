@@ -7,6 +7,8 @@ import Echart from '@/components/Echart'
 import identify from '@/components/identify'
 import Register from '@/components/Register'
 import Top from '@/components/Top'
+import Chat from '@/components/Chat'
+
 Vue.use(Router)
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
@@ -52,6 +54,11 @@ export default new Router({
       path: '/Top',
       name: 'Top',
       component: Top
+    },
+    {
+      path: '/Chat',
+      name: 'Chat',
+      component: Chat
     }
    
   ]
