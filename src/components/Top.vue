@@ -78,6 +78,20 @@ export default {
         type: "warning"
       })
         .then(() => {
+          // axios请求开始
+        var token = window.localStorage.getItem("token");
+        this.axios.defaults.headers.common["token"] = token;
+        this.axios
+          .post(process.env.VUE_APP_BASE_API + "/lifespace/logout", {
+            account: window.localStorage.getItem("account")
+          })
+          .then(response => {
+            
+          })
+          .catch(function(error) {
+           
+          });
+        // axios请求结束
           this.$message({
             type: "success",
             message: "已退朝!"

@@ -13,8 +13,16 @@
             <li v-for="item in userList" v-bind:key="item.id" class="person" @click="toChat(item)">
               <img :src="'http://fdfs.tiger2.cn/'+item.toppicurl" alt />
               <span class="name">{{item.username}}</span>
-              <span class="time">12:30</span>
-              <span class="preview">聊天的最后一句话</span>
+              <span style="   display: block;
+                              width: 32px;
+                              height: 25px;
+                              border-radius: 45px;
+                              background-color: lightgray;
+                              color: white;
+                              text-align: center;
+                              line-height: 25px;" class="time">2</span>
+              <span v-if="item.status=='在线'" class="preview" style="color:blue;">[在线ING]</span>
+              <span v-if="item.status=='离线'" class="preview" style="color:red;">[已离线]</span>
             </li>
           </ul>
         </div>
@@ -25,7 +33,7 @@
             </span>
           </div>
 
-          <div id="Chat" class="chat" data-chat="person2">
+          <div id="Chat" class="chat" data-chat="person1">
             <!-- <div class="conversation-start">
               <span>上午5:38</span>
             </div>-->
@@ -69,7 +77,8 @@ export default {
       websock: null,
       receiveAccount: "", //接收人id
       message: "", //要发送的消息
-      msgList: []
+      msgList: [],
+      currentTab:""  //当前窗口是在和哪个账号聊天
     };
   },
   //监听属性 类似于data概念
@@ -118,7 +127,8 @@ export default {
       );
       let account = window.localStorage.getItem("account");
 
-      if (account == sendUserAccount) {
+      if(this.currentTab==sendUserAccount||account==sendUserAccount){
+        if (account == sendUserAccount) {
         //发送人是自己
         this.msgList.push({
           type: true,
@@ -132,6 +142,7 @@ export default {
           time: new Date(),
           content: sendMessage
         });
+      }
       }
       
     },
@@ -148,32 +159,19 @@ export default {
       this.message = "";
     },
     toChat(e) {
-      this.currentChatUser = "正在和" + e.username + "对话中";
-      this.initWebSocket();
-      this.receiveAccount = e.account;
-    },
-    scrollToBottom() {
-      this.$nextTick(() => {
-        var container = document.getElementById("Chat");
-        container.scrollTop = container.scrollHeight;
-      });
-    }
-  },
-  //生命周期 - 创建完成（可以访问当前this实例）
-  created() {
-    //this.initWebSocket();
-    const touxiang = window.localStorage.getItem("touxiang");
-    const username = window.localStorage.getItem("username");
-    this.touxiang = touxiang;
-    this.username = username;
-    var _this = this;
-    // axios请求开始
+
+      // 把和e.username的聊天记录的status全部更改为已读
+
+
+      //查询聊天记录
+      // axios请求开始
     var token = window.localStorage.getItem("token");
     console.log("token:" + token);
     this.axios.defaults.headers.common["token"] = token;
     this.axios
-      .post(process.env.VUE_APP_BASE_API + "/lifespace/getAllUsers", {
-        user: window.localStorage.getItem("account")
+      .post(process.env.VUE_APP_BASE_API + "/lifespace/getAllMessages", {
+        senduser: window.localStorage.getItem("account"),
+        receiveuser:e.account
       })
       .then(response => {
         var code = response.data.errorCode;
@@ -186,6 +184,39 @@ export default {
           });
         } else {
           console.log(response);
+          this.msgList = response.data;
+        }
+      })
+      .catch(function(error) {
+        this.$message.error("服务器发生故障");
+      });
+    // axios请求结束
+      this.currentTab=e.account;
+      this.currentChatUser = "正在和" + e.username + "对话中";
+      this.initWebSocket();
+      this.receiveAccount = e.account;
+    },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        var container = document.getElementById("Chat");
+        container.scrollTop = container.scrollHeight;
+      });
+    },
+    getAllUsers(){
+      // axios请求开始
+    var token = window.localStorage.getItem("token");
+    console.log("token:" + token);
+    this.axios.defaults.headers.common["token"] = token;
+    this.axios
+      .post(process.env.VUE_APP_BASE_API + "/lifespace/getAllUsers", {
+        user: window.localStorage.getItem("account")
+      })
+      .then(response => {
+        var code = response.data.errorCode;
+        if (code == "101") {
+         
+        } else {
+          console.log(response);
           this.userList = response.data;
         }
       })
@@ -193,11 +224,29 @@ export default {
         this.$message.error("服务器发生故障");
       });
     // axios请求结束
+    },
+    timer: function () {
+       this.getAllUsers();
+       console.log("定时器执行");
+     }
+  },
+  //生命周期 - 创建完成（可以访问当前this实例）
+  created() {
+    //this.initWebSocket();
+    const touxiang = window.localStorage.getItem("touxiang");
+    const username = window.localStorage.getItem("username");
+    this.touxiang = touxiang;
+    this.username = username;
+    var _this = this;
+    this.getAllUsers();
+    setInterval(this.timer, 10000);
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.scrollToBottom();
     this.base_api = process.env.VUE_APP_BASE_API;
+
+    
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
