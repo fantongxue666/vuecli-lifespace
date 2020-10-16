@@ -83,7 +83,7 @@ export default {
     initWebSocket() {
       this.websock = null;
       //判断当前浏览器是否支持WebSocket
-      var wsUrl = "ws://127.0.0.1:8082/charRoomServer";
+      var wsUrl = "ws://vue.tiger2.cn:8082/charRoomServer";
       var allUrl = wsUrl + "/" + window.localStorage.getItem("account");
       if ("WebSocket" in window) {
         //初始化weosocket(必须)
