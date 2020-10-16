@@ -13,14 +13,7 @@
             <li v-for="item in userList" v-bind:key="item.id" class="person" @click="toChat(item)">
               <img :src="'http://fdfs.tiger2.cn/'+item.toppicurl" alt />
               <span class="name">{{item.username}}</span>
-              <span style="   display: block;
-                              width: 32px;
-                              height: 25px;
-                              border-radius: 45px;
-                              background-color: lightgray;
-                              color: white;
-                              text-align: center;
-                              line-height: 25px;" class="time">2</span>
+              <span v-if="item.wd>0" class="time" style="font-size:12px;">{{item.wd}}条未读</span>
               <span v-if="item.status=='在线'" class="preview" style="color:blue;">[在线ING]</span>
               <span v-if="item.status=='离线'" class="preview" style="color:red;">[已离线]</span>
             </li>
@@ -73,7 +66,7 @@ export default {
       touxiang: "",
       username: "",
       userList: [],
-      currentChatUser: "暂无对话",
+      currentChatUser: "请选择您要聊天的对象",
       websock: null,
       receiveAccount: "", //接收人id
       message: "", //要发送的消息
@@ -239,7 +232,7 @@ export default {
     this.username = username;
     var _this = this;
     this.getAllUsers();
-    setInterval(this.timer, 10000);
+    setInterval(this.timer, 5000);
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {

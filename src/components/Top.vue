@@ -9,36 +9,36 @@
       mode="horizontal"
       @select="handleSelect"
     >
-      <el-menu-item index="1">处理中心</el-menu-item>
+      <!-- <el-menu-item index="1">处理中心</el-menu-item> -->
       <el-submenu index="2">
         <template slot="title">
             <img style="width:30px;height:30px;border-radius:45px;" :src="'http://fdfs.tiger2.cn/'+touxiang" alt />
             {{username}}
         </template>
         <el-menu-item index="2-1">
-            <router-link to="/HelloWorld" style="color:black;">动态列表</router-link>
+            <router-link to="/HelloWorld" style="color:black;">空间动态</router-link>
         </el-menu-item>
         <el-menu-item index="2-1">
-            <router-link to="/SendForm" style="color:black;">发表动态</router-link>
+            <router-link to="/SendForm" style="color:black;">发表新的动态</router-link>
         </el-menu-item>
         <el-menu-item index="2-1">
-            <router-link to="/Chat" style="color:black;">实时聊天</router-link>
+            <router-link to="/Chat" style="color:black;">返回聊天窗口</router-link>
         </el-menu-item>
         <el-menu-item index="2-2">
             <el-button type="text" @click="open" style="color:black;">退出</el-button>
         </el-menu-item>
-        <el-menu-item index="2-3">选项3</el-menu-item>
+        <!-- <el-menu-item index="2-3">选项3</el-menu-item>
         <el-submenu index="2-4">
           <template slot="title">选项4</template>
           <el-menu-item index="2-4-1">选项1</el-menu-item>
           <el-menu-item index="2-4-2">选项2</el-menu-item>
           <el-menu-item index="2-4-3">选项3</el-menu-item>
-        </el-submenu>
+        </el-submenu> -->
       </el-submenu>
       <el-menu-item index="3" disabled>消息中心</el-menu-item>
-      <el-menu-item index="4">
+      <!-- <el-menu-item index="4">
         <a href="https://www.ele.me" target="_blank">订单管理</a>
-      </el-menu-item>
+      </el-menu-item> -->
     </el-menu>
 
     <!--  -->

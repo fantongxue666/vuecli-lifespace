@@ -61,7 +61,7 @@ export default {
               "account",
               successResponse.data.account
             );
-            this.$router.replace({ path: "/HelloWorld" });
+            this.$router.replace({ path: "/Chat" });
           } else if (successResponse.data.code=='500') {
             this.$message({
               message: "账号或密码错误",
