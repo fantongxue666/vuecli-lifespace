@@ -62,7 +62,7 @@
             </div>
             <!-- 评论结束 -->
             <div class="text-box">
-              <textarea class="comment" v-model="comment" autocomplete="off">评论…</textarea>
+              <textarea style="height:25px;" class="comment" v-model="comment" autocomplete="off">评论…</textarea>
               <button class="btn" @click="huifu($event)" :id="item.id">回 复</button>
               <span class="word">
                 <span class="length">0</span>/140

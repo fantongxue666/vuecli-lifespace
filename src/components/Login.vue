@@ -84,7 +84,7 @@ export default {
 };
 </script>
  
-<style>
+<style scoped>
 .toRegister {
   text-decoration: none;
   font-size: 15px;

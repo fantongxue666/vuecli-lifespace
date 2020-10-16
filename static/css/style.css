@@ -14,12 +14,7 @@
 }
 
 body {
-  background-color: var(--bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 400;
+ 
   
 }
 
@@ -34,7 +29,7 @@ body {
 
 .container {
   position: relative;
-  top: 50%;
+  top: 40%;
   left: 50%;
   width: 80%;
   height: 75%;
@@ -99,6 +94,8 @@ body {
   border-right: 1px solid var(--light);
   border-left: 1px solid var(--light);
   width: calc(100% + 2px);
+  overflow: scroll;
+  height: 84%;
 }
 .container .left .people .person {
   position: relative;
@@ -190,8 +187,8 @@ body {
 }
 .container .right .chat {
   position: relative;
-  display: none;
-  overflow: hidden;
+  display: block;
+  overflow: scroll;
   padding: 0 35px 92px;
   border-width: 1px 1px 1px 0;
   border-style: solid;
